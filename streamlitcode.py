@@ -41,7 +41,7 @@ uploaded_image = st.file_uploader("Upload an image of a food item (limit large f
 
 if uploaded_image:
     image = Image.open(uploaded_image)
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    st.image(image, caption='Uploaded Image', width=224)
     st.write("")
 # Preprocess the uploaded image
     img_array = preprocess_image(uploaded_image)
