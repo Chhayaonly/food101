@@ -20,7 +20,7 @@ tf.keras.utils.get_custom_objects().update({
 model_path = r'C:/Users/Chhaya/Downloads/my food101model (1).h5'
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('/content/my_food101_model.keras', custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
+model = tf.keras.models.load_model(model_path, custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
 
 # Define class labels
 class_names = [
@@ -45,15 +45,13 @@ if uploaded_image:
     image = Image.open(uploaded_image)
     st.image(image, caption='Uploaded Image', use_column_width=True)
     st.write("")
-
-    if st.button('Classify'):
-        # Preprocess the uploaded image
-        img_array = preprocess_image(uploaded_image)
+# Preprocess the uploaded image
+    img_array = preprocess_image(uploaded_image)
 
         # Make a prediction using the pre-trained model
-        prediction = model.predict(img_array)
-        predicted_class = np.argmax(prediction)
-        predicted_label = class_names[predicted_class]
-        pred_confidence = np.max(prediction) * 100  # Confidence score as a percentage
+    prediction = model.predict(img_array)
+    predicted_class = np.argmax(prediction)
+    predicted_label = class_names[predicted_class]
+    pred_confidence = np.max(prediction) * 100  # Confidence score as a percentage
 
-        st.success(f'I am {pred_confidence:.2f}% sure that this is an image of {predicted_label}')
+    st.success(f'I am {pred_confidence:.2f}% sure that this is an image of {predicted_label}')
