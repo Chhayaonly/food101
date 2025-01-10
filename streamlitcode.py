@@ -34,7 +34,6 @@ def preprocess_image(image_file):
     img = Image.open(image_file).resize((224, 224))  # Resize to match model's input
     img_array = np.array(img) / 255.0  # Normalize pixel values
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    prediction = model.predict(img_array)
     img_array = np.expand_dims(img_array, axis=0)
 
     return img_array
@@ -57,5 +56,5 @@ if uploaded_image:
         prediction = model.predict(img_array)
         predicted_class = np.argmax(prediction)
         predicted_label = class_names[predicted_class]
-
-        st.success(f'Prediction: {predicted_label}')
+        pred_confidence = np.max(pred)  # Confidence score (probability) for the predicted class
+        st.success(f'I am {pred_confidence} % sure that this is an image of {predicted_label}')
