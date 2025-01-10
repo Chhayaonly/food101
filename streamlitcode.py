@@ -1,41 +1,8 @@
-# Install necessary package
-#!pip install streamlit
-
-import streamlit as st
-import tensorflow as tf
-from PIL import Image
-import numpy as np
-import os
-
-# Custom loss function to handle deserialization
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
-
-class CustomSparseCategoricalCrossentropy(SparseCategoricalCrossentropy):
-    def __init__(self, reduction='auto', name='sparse_categorical_crossentropy', from_logits=False):
-        super().__init__(reduction=reduction, name=name, from_logits=from_logits)
-
-# Register the custom loss function
-tf.keras.utils.get_custom_objects().update({
-    'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy
-})
-
-# Load the pre-trained model
-model = tf.keras.models.load_model('my food101model.h5', custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
-
-# Define class labels
-class_names = [
-    'burger', 'butter naan', 'chai', 'chapati', 'chole_bhature', 'dal makhani',
-    'dhokla', 'fried_rice', 'idli', 'jalebi', 'kathi roll', 'kadhai paneer',
-    'kulfi', 'momos', 'paani puri', 'pakode', 'pav bhaji', 'pizza', 'samosa'
-]
-
 # Function to preprocess the uploaded image
 def preprocess_image(image_file):
-    img = Image.open(image_file).resize((224, 224))  # Resize to match model's input
+    img = Image.open(image_file).resize((224, 224)).convert('RGB')  # Ensure RGB and resize
     img_array = np.array(img) / 255.0  # Normalize pixel values
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    img_array = np.expand_dims(img_array, axis=0)
-
     return img_array
 
 # Streamlit App
@@ -56,5 +23,6 @@ if uploaded_image:
         prediction = model.predict(img_array)
         predicted_class = np.argmax(prediction)
         predicted_label = class_names[predicted_class]
-        pred_confidence = np.max(pred)  # Confidence score (probability) for the predicted class
-        st.success(f'I am {pred_confidence} % sure that this is an image of {predicted_label}')
+        pred_confidence = np.max(prediction) * 100  # Confidence score as a percentage
+
+        st.success(f'I am {pred_confidence:.2f}% sure that this is an image of {predicted_label}')
