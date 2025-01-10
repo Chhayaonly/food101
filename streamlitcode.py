@@ -1,3 +1,34 @@
+import streamlit as st
+import tensorflow as tf
+from PIL import Image
+import numpy as np
+import os
+
+# Custom loss function to handle deserialization
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
+
+class CustomSparseCategoricalCrossentropy(SparseCategoricalCrossentropy):
+    def __init__(self, reduction='auto', name='sparse_categorical_crossentropy', from_logits=False):
+        super().__init__(reduction=reduction, name=name, from_logits=from_logits)
+
+# Register the custom loss function
+tf.keras.utils.get_custom_objects().update({
+    'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy
+})
+
+# Set model path (ensure correct path)
+model_path = r'C:/Users/Chhaya/Downloads/my food101model (1).h5'
+
+# Load the pre-trained model
+model = tf.keras.models.load_model('/content/my_food101_model.keras', custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
+
+# Define class labels
+class_names = [
+    'burger', 'butter naan', 'chai', 'chapati', 'chole_bhature', 'dal makhani',
+    'dhokla', 'fried_rice', 'idli', 'jalebi', 'kathi roll', 'kadhai paneer',
+    'kulfi', 'momos', 'paani puri', 'pakode', 'pav bhaji', 'pizza', 'samosa'
+]
+
 # Function to preprocess the uploaded image
 def preprocess_image(image_file):
     img = Image.open(image_file).resize((224, 224)).convert('RGB')  # Ensure RGB and resize
