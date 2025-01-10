@@ -31,10 +31,12 @@ class_names = [
 
 # Function to preprocess the uploaded image
 def preprocess_image(image_file):
-    img = Image.open(image_file).convert('RGB')
-    img = img.resize((100, 100))
-    img_array = np.array(img) / 255.0
-    img_array = img_array.reshape((1, 100, 100, 3))  # Reshape to match input shape
+    img = Image.open(uploaded_file).resize((224, 224))  # Resize to match model's input
+    img_array = np.array(img) / 255.0  # Normalize pixel values
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+    prediction = model.predict(img_array)
+    img_array = np.expand_dims(img_array, axis=0)
+
     return img_array
 
 # Streamlit App
