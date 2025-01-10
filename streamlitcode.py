@@ -31,7 +31,7 @@ class_names = [
 
 # Function to preprocess the uploaded image
 def preprocess_image(image_file):
-    img = Image.open(uploaded_file).resize((224, 224))  # Resize to match model's input
+    img = Image.open(image_file).resize((224, 224))  # Resize to match model's input
     img_array = np.array(img) / 255.0  # Normalize pixel values
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
     prediction = model.predict(img_array)
