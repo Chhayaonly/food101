@@ -23,7 +23,7 @@ tf.keras.utils.get_custom_objects().update({
 model_path = r'C:/Users/Chhaya/Downloads/my food101model (1).h5'
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('/content/my_food101_model.keras', custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
+model = tf.keras.models.load_model('C:/Users/Chhaya/Downloads/my food101model (1).h5', custom_objects={'SparseCategoricalCrossentropy': CustomSparseCategoricalCrossentropy})
 
 # Define class labels
 class_names = [
