@@ -36,5 +36,5 @@ if uploaded_image:
     st.write("")
     
 st.subheader('Prediction:')
-confidence, predicted_class = predict_food101('temp_image.jpg')
+confidence, predicted_class = preprocess_image('temp_image.jpg')
 st.write(f'I am {confidence * 100:.2f}% confident that this is an image of **{predicted_class}**.')
