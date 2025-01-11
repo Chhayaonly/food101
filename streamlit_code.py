@@ -4,12 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-# Load the saved model
-@st.cache_resource
-def load_food101_model():
-    return load_model('my_food101_model.keras')
+# Load the pre-trained model
+model = tf.keras.models.load_model('my food101model.h5')
 
-model = load_food101_model()
 
 def predict_food101(img_path):
     # Read and preprocess the image
