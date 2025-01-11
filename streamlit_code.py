@@ -2,6 +2,7 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 import numpy as np
 import tensorflow as tf
+from PIL import Image
 
 # Load the pre-trained model
 model = tf.keras.models.load_model('my food101model.h5')
